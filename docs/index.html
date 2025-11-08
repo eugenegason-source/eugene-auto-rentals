@@ -1,0 +1,352 @@
+import React, { useState } from "react";
+import { Check, Phone, Mail, MapPin, Menu, X, Car, Store, Star, Shield, Clock, Send } from "lucide-react";
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Minimal one‑page small‑business website
+// Tech: React (single file), TailwindCSS utility classes, lucide-react icons
+// How to customize:
+//  1) Edit the BRAND object below (name, tagline, colors, contact info)
+//  2) Swap images in the GALLERY array with your own URLs
+//  3) Adjust the PRICING and FEATURES to match your business
+//  4) Export and host on Vercel/Netlify (or ask me to package as plain HTML)
+// ──────────────────────────────────────────────────────────────────────────────
+
+const BRAND = {
+  name: "Eugene Auto‑Rentals",
+  tagline: "Reliable rides. Simple rates. Island‑wide.",
+  phone: "+1 (758) 713‑3606",
+  email: "eugeneautorentals@gmail.com",
+  address: "Castries, Saint Lucia",
+  accent: "from-cyan-500 to-blue-600",
+};
+
+const NAV = [
+  { label: "Home", href: "#home" },
+  { label: "Services", href: "#services" },
+  { label: "Fleet", href: "#fleet" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Requirements", href: "#requirements" },
+  { label: "Contact", href: "#contact" },
+];
+
+const FEATURES = [
+  { icon: <Shield className="w-6 h-6" />, title: "Fully Insured", blurb: "Every rental includes standard insurance and 24/7 roadside support." },
+  { icon: <Clock className="w-6 h-6" />, title: "On‑Time Delivery", blurb: "Airport or hotel drop‑off and pick‑up—punctual, every time." },
+  { icon: <Star className="w-6 h-6" />, title: "Clean & Reliable", blurb: "Well‑maintained vehicles, fresh interiors, no surprises." },
+];
+
+const FLEET = [
+  { name: "Mitsubishi RVR (Grey)", note: "SUV • Automatic • A/C", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop" },
+  { name: "Suzuki SX4 Crossover (White)", note: "Compact SUV • Great mileage", img: "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop" },
+  { name: "Toyota Corolla Axio (Silver)", note: "Economy Sedan • Comfortable", img: "https://images.unsplash.com/photo-1550354877-94d5f7e55699?q=80&w=1600&auto=format&fit=crop" },
+];
+
+const PRICING = [
+  { tier: "Daily", price: "XCD $150", points: ["Free pick‑up in Castries", "Unlimited km", "Basic insurance"] },
+  { tier: "Weekly", price: "XCD $900", points: ["Airport delivery", "Priority support", "Accident assistance"] },
+  { tier: "Monthly", price: "XCD $3,200", points: ["Best value", "Flexible swap", "Maintenance coverage"] },
+];
+
+const FAQS = [
+  { q: "What documents do I need?", a: "A valid driver’s license and a government‑issued ID or passport. International licenses are accepted." },
+  { q: "Do you require a deposit?", a: "A refundable security deposit may apply based on vehicle class and duration." },
+  { q: "Can you deliver to the airport?", a: "Yes—Hewanorra and George F. L. Charles. We can also meet at hotels or ferry terminals." },
+];
+
+const GALLERY = [
+  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1502872364588-89487a9b47dc?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1550354877-94d5f7e55699?q=80&w=1600&auto=format&fit=crop",
+];
+
+function NavBar() {
+  const [open, setOpen] = useState(false);
+  return (
+    <header className="fixed top-0 inset-x-0 z-50 backdrop-blur bg-white/70 border-b">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+        <a href="#home" className="font-bold tracking-tight text-xl">{BRAND.name}</a>
+        <nav className="hidden md:flex gap-6 text-sm">
+          {NAV.map((n) => (
+            <a key={n.href} href={n.href} className="hover:text-blue-600">
+              {n.label}
+            </a>
+          ))}
+        </nav>
+        <a href="#contact" className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r text-white shadow from-blue-600 to-indigo-600">
+          <Phone className="w-4 h-4" /> Book Now
+        </a>
+        <button className="md:hidden p-2" onClick={() => setOpen((v) => !v)} aria-label="Toggle menu">
+          {open ? <X /> : <Menu />}
+        </button>
+      </div>
+      {open && (
+        <div className="md:hidden border-t bg-white">
+          <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3">
+            {NAV.map((n) => (
+              <a key={n.href} href={n.href} className="py-2" onClick={() => setOpen(false)}>
+                {n.label}
+              </a>
+            ))}
+            <a href="#contact" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r text-white from-blue-600 to-indigo-600 w-max">
+              <Phone className="w-4 h-4" /> Book Now
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section id="home" className="pt-28">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <span className={`inline-block text-xs font-semibold tracking-wider uppercase bg-gradient-to-r ${BRAND.accent} text-white px-3 py-1 rounded-full shadow`}>Saint Lucia</span>
+          <h1 className="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+            {BRAND.tagline}
+          </h1>
+          <p className="mt-4 text-slate-600">
+            From airport pickup to cross‑island adventures, we make car rentals
+            effortless—transparent pricing, quick handovers, and friendly local support.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href="#pricing" className="px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow">See Rates</a>
+            <a href="#fleet" className="px-5 py-3 rounded-2xl border">View Fleet</a>
+          </div>
+          <div className="mt-6 flex items-center gap-4 text-sm text-slate-600">
+            <div className="flex items-center gap-2"><Star className="w-4 h-4" /> 4.9/5 customer rating</div>
+            <div className="flex items-center gap-2"><Car className="w-4 h-4" /> Same‑day bookings</div>
+          </div>
+        </div>
+        <div className="relative">
+          <div className={`absolute -inset-4 bg-gradient-to-r ${BRAND.accent} blur-3xl opacity-20 rounded-[48px]`} />
+          <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1600&auto=format&fit=crop" alt="Hero vehicle" className="relative rounded-3xl shadow-xl" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Services() {
+  return (
+    <section id="services" className="py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-bold tracking-tight">Services</h2>
+        <p className="mt-2 text-slate-600">Everything you need for a smooth trip.</p>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {FEATURES.map((f) => (
+            <div key={f.title} className="p-6 rounded-2xl border bg-white shadow-sm">
+              <div className={`w-10 h-10 rounded-xl grid place-items-center bg-gradient-to-r ${BRAND.accent} text-white mb-3`}>{f.icon}</div>
+              <h3 className="font-semibold text-lg">{f.title}</h3>
+              <p className="text-slate-600 text-sm mt-1">{f.blurb}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Fleet() {
+  return (
+    <section id="fleet" className="py-20 bg-slate-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-bold tracking-tight">Fleet Highlights</h2>
+        <p className="mt-2 text-slate-600">Comfortable, fuel‑efficient options for solo travelers and families.</p>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {FLEET.map((c) => (
+            <div key={c.name} className="rounded-2xl overflow-hidden border bg-white shadow-sm">
+              <img src={c.img} alt={c.name} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="font-semibold">{c.name}</h3>
+                <p className="text-sm text-slate-600">{c.note}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 text-sm text-slate-600">
+          Need a specific model? <a href="#contact" className="underline">Contact us</a> and we’ll confirm availability.
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Pricing() {
+  return (
+    <section id="pricing" className="py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-bold tracking-tight">Simple, transparent pricing</h2>
+        <p className="mt-2 text-slate-600">No hidden fees. Discounts for long‑term rentals. Rates in XCD.</p>
+        <div className="mt-8 grid md:grid-cols-3 gap-6">
+          {PRICING.map((p, i) => (
+            <div key={p.tier} className={`rounded-2xl border bg-white shadow-sm p-6 ${i === 1 ? 'ring-2 ring-blue-600' : ''}`}>
+              <div className="flex items-center gap-2 text-sm text-slate-500"><Store className="w-4 h-4" /> {p.tier}</div>
+              <div className="mt-3 text-3xl font-bold">{p.price}</div>
+              <ul className="mt-4 space-y-2 text-sm">
+                {p.points.map((pt) => (
+                  <li key={pt} className="flex items-start gap-2"><Check className="w-4 h-4 mt-0.5" /> {pt}</li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-col gap-2">
+                <a href="#contact" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                  <Send className="w-4 h-4"/> Request booking
+                </a>
+                <a href={`https://wa.me/17587133606?text=${encodeURIComponent('Hi Eugene Auto‑Rentals! I would like to book a car.')} `} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border">
+                  WhatsApp us
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Gallery() {
+  return (
+    <section className="py-16 bg-slate-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-bold tracking-tight">Gallery</h2>
+        <p className="mt-2 text-slate-600">A glimpse of recent handovers and happy travelers.</p>
+        <div className="mt-6 grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {GALLERY.map((src, i) => (
+            <img key={i} src={src} alt={`Gallery ${i+1}`} className="rounded-xl border shadow-sm object-cover w-full h-48" />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section id="faq" className="py-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-bold tracking-tight">Frequently asked questions</h2>
+        <div className="mt-6 divide-y">
+          {FAQS.map((f, i) => (
+            <div key={f.q} className="py-4">
+              <button onClick={() => setOpen(open === i ? null : i)} className="w-full text-left flex items-center justify-between gap-4">
+                <span className="font-medium">{f.q}</span>
+                <span className="text-xl leading-none">{open === i ? '−' : '+'}</span>
+              </button>
+              {open === i && <p className="mt-2 text-slate-600">{f.a}</p>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Requirements() {
+  return (
+    <section id="requirements" className="py-20 bg-slate-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-bold tracking-tight">Driver & rental requirements</h2>
+        <ul className="mt-4 grid md:grid-cols-2 gap-3 text-slate-700 text-sm">
+          <li>• Valid driver’s license (local or international) and government‑issued ID/passport.</li>
+          <li>• Minimum age 25 (or 21+ with young‑driver conditions).</li>
+          <li>• Refundable security deposit—amount varies by vehicle and duration.</li>
+          <li>• Airport delivery available: Hewanorra (UVF) & George F. L. Charles (SLU).</li>
+          <li>• Fuel policy: like‑for‑like at handover/return.</li>
+          <li>• Free mileage within Saint Lucia; off‑road use prohibited.</li>
+        </ul>
+        <p className="mt-4 text-xs text-slate-500">Note: Policies can vary by model or season. We’ll confirm full terms in your booking email.</p>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget.closest('form');
+    const name = form.querySelector('input[placeholder="Full name"]').value || '';
+    const email = form.querySelector('input[type="email"]').value || '';
+    const phone = form.querySelector('input[placeholder="Phone"]').value || '';
+    const pick = form.querySelector('input[placeholder="Pickup date"]').value || '';
+    const drop = form.querySelector('input[placeholder="Drop‑off date"]').value || '';
+    const notes = form.querySelector('textarea').value || '';
+    const subject = encodeURIComponent(`Booking request from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Pickup: ${pick}
+Drop‑off: ${drop}
+Notes: ${notes}`);
+    window.location.href = `mailto:${BRAND.email}?subject=${subject}&body=${body}`;
+  };
+  return (
+    <section id="contact" className="py-20 bg-slate-900 text-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-10 items-start">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Book your ride</h2>
+          <p className="mt-2 text-slate-300">Tell us your dates and preferred pickup location. We'll confirm availability fast.</p>
+          <div className="mt-6 space-y-3 text-sm">
+            <div className="flex items-center gap-2"><Phone className="w-4 h-4" /> {BRAND.phone}</div>
+            <div className="flex items-center gap-2"><Mail className="w-4 h-4" /> {BRAND.email}</div>
+            <div className="flex items-center gap-2"><MapPin className="w-4 h-4" /> {BRAND.address}</div>
+            <a className="inline-block mt-1 underline" href={`https://wa.me/17587133606?text=${encodeURIComponent('Hi Eugene Auto‑Rentals! I would like to book a car.')} `}>Chat on WhatsApp</a>
+          </div>
+        </div>
+        <form className="bg-white/5 backdrop-blur p-6 rounded-2xl border border-white/10">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <input className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60" placeholder="Full name" required />
+            <input type="email" className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60" placeholder="Email" required />
+            <input className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60 sm:col-span-2" placeholder="Phone" />
+            <input className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60" placeholder="Pickup date" />
+            <input className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60" placeholder="Drop‑off date" />
+            <textarea className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60 sm:col-span-2" rows={4} placeholder="Notes (flight no., hotel, vehicle preference)"></textarea>
+          </div>
+          <button type="submit" className={`mt-4 w-full px-4 py-2 rounded-xl bg-gradient-to-r ${BRAND.accent} text-white flex items-center justify-center gap-2`} onClick={handleSubmit}>
+            <Send className="w-4 h-4"/> Send request
+          </button>
+          <p className="mt-2 text-xs text-white/70">Prefer WhatsApp or phone? Use the links above for the fastest reply.</p>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="py-10 border-t bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+        <div>
+          © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+        </div>
+        <div className="flex items-center gap-4 text-slate-600">
+          <a href={`mailto:${BRAND.email}`} className="hover:text-blue-600">Email</a>
+          <a href="tel:+17587133606" className="hover:text-blue-600">Call</a>
+          <a href="#" className="hover:text-blue-600">Privacy</a>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function Website() {
+  return (
+    <div className="font-sans antialiased text-slate-900">
+      <NavBar />
+      <main>
+        <Hero />
+        <Services />
+        <Fleet />
+        <Pricing />
+        <Gallery />
+        <FAQ />
+        <Requirements />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  );
+}
